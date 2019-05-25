@@ -1,0 +1,138 @@
+<div xmlns="http://www.w3.org/1999/html">
+
+  <form [formGroup] = "form" (ngSubmit)="createPerson()" >
+
+
+    <div class="form-row">
+      <div class="form-group col-sm-2">
+        <label for="firstName">Имя:</label>
+        <input type="text" class="form-control" id="firstName" placeholder="FirstName" formControlName="firstname" required>
+      <!--  <label *ngIf="form.get('firstname').invalid&&form.get('firstname').touched"[ngClass]="'has-error'"  >Поле должно быть заполнено</label> -->
+      </div>
+      <div class="form-group col-sm-2">
+        <label for="lastName">Фамилия:</label>
+        <input type="text" class="form-control" id="lastName" placeholder="LastName" formControlName="lastname">
+      <!--  <label *ngIf="form.get('lastname').invalid&&form.get('lastname').touched" [ngClass]="'has-error'">Поле должно быть заполнено</label> -->
+      </div>
+      <div class="form-group col-sm-2">
+        <label for="patronymic">Отчество:</label>
+        <input type="text" class="form-control" id="patronymic" placeholder="Patronymic" formControlName="patronymic">
+      </div>
+    </div>
+
+<h2>Address:</h2>
+    <div formGroupName="address" >
+      <div class="form-row">
+      <div class="form-group col-sm-2">
+        <label for="state">Штат:</label>
+          <input type="text" class="form-control" id="state" placeholder="State" formControlName="state">
+      </div>
+
+      <div class="form-group col-sm-2">
+        <label for="city">Город:</label>
+          <input type="text" class="form-control" id="city" placeholder="City" formControlName="city">
+      </div>
+      </div>
+
+      <div class="form-row">
+      <div class="form-group col-sm-3">
+        <label for="street">Улица:</label>
+          <input type="text" class="form-control" id="street" placeholder="Street" formControlName="street">
+      </div>
+
+       <div class="form-group col-sm-1">
+         <label for="home">Дом:</label>
+           <input type="text" class="form-control" id="home" placeholder="Home" formControlName="home">
+       </div>
+       <div class="form-group col-sm-1">
+         <label for="number">Номер:</label>
+           <input type="text" class="form-control" id="number" formControlName="number">
+       </div>
+      </div>
+    </div>
+
+
+    <div  formArrayName="emails"   *ngFor="let item of getEmails.controls; let i = index;">
+      <div  [formGroupName]="i">
+        <div class="form-group col-sm-4" >
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter email">
+          <button type="button" class="btn btn-primary" (click)="addEmail()">Add Email</button>
+          <button type="button" class="btn btn-danger" (click)="deleteEmail(i)">Delete Email</button>
+        </div>
+      </div>
+    </div>
+
+    <div  formArrayName="phones"    *ngFor="let item of getPhones.controls; let i = index;">
+      <div  [formGroupName]="i">
+          <div class="form-group col-sm-4" >
+            <label for="phone">Phone:</label>
+          <input type="text" class="form-control" id="phone" formControlName="line" placeholder="Enter number">
+           <button type="button" class="btn btn-primary" (click)="addPhone()">Add Phone</button>
+           <button type="button" class="btn btn-danger" (click)="deletePhone(i)">Delete Phone</button>
+         </div>
+     </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-sm-2">
+        <label for="position">Должность:</label>
+        <input type="text" class="form-control" id="position" placeholder="Position" formControlName="position">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-sm-3">
+        <label for="comment">Коментарий:</label>
+        <textarea class="form-control"  rows="2" id="comment" placeholder="Comment" formControlName="comment"></textarea>
+      </div>
+      <div class="form-group col-sm-3">
+        <label for="appeal">Обращение:</label>
+        <textarea class="form-control" id="appeal" rows="2" placeholder="Appeal" formControlName="appeal"></textarea>
+      </div>
+    </div>
+
+    <tr><td colspan="2">
+      <button class="btn badge-primary" *ngIf="!personIdToUpdate" >CREATE</button>
+      <button class="btn btn-warning" *ngIf="personIdToUpdate">UPDATE</button>
+      <button class="btn btn-primary" (click)="backToCreatePerson()" *ngIf="personIdToUpdate">Go Back</button>
+    </td></tr>
+
+    </form>
+
+  <p>{{ this.form.value | json }}</p>
+
+
+
+   <div class="col-md-6">
+    <h2 style="margin: auto"> Person information Details</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th >Id</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Patronymic</th>
+        <th>Email</th>
+        <th>Phone</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let person of persons">
+        <td >{{person.id}}</td>
+        <td>{{person.firstName}}</td>
+        <td>{{person.lastName}}</td>
+        <td>{{person.patronymic}}</td>
+        <td>{{getFields(person.emails, 'email')}}</td>
+        <td>{{getFieldsPhones1(person.phones, 'line')}}</td>
+        <td><button type="button" class="btn btn-info" (click)="loadPersonToEdit(person.id)"> Edit</button></td>
+        <td> <button class="btn btn-danger" (click)="deletePerson(person.id)" >Delete</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+
